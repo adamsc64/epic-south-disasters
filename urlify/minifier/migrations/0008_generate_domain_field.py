@@ -7,16 +7,21 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        "Write your forwards methods here."
-        # Note: Don't use "from appname.models import ModelName".
-        # Use orm.ModelName to refer to models in this application,
-        # and orm['appname.ModelName'] for models in other applications.
+        opts = orm.MinifiedURL._meta
+        field = opts.get_field_by_name('updated')[0]
+
+        # Disable the 'auto_now' functionality.
+        old_auto_now = field.auto_now
+        field.auto_now = False
+
         for minified_url in orm.MinifiedURL.objects.all():
             minified_url.domain = minified_url.url.split('/')[2]
             minified_url.save()
 
+        field.auto_now = old_auto_now
+
     def backwards(self, orm):
-        "Write your backwards methods here."
+        pass
 
     models = {
         u'auth.group': {
