@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 class MinifiedURL(models.Model):
     submitter = models.ForeignKey('auth.user', null=True)
-    url = models.CharField(max_length=100)
+    url = models.CharField(max_length=100, db_index=True)
     domain = models.CharField(max_length=30)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
